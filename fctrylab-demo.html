@@ -927,91 +927,14 @@
   <div class="launcher-glow-ring-2"></div>
   <div class="chat-bubble"><span class="glow-dot"></span>How can I help you? 👟</div>
   <div class="shoe-wrap">
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <!-- Gradients -->
-        <linearGradient id="soleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#1e1e1e" />
-          <stop offset="100%" stop-color="#0a0a0a" />
-        </linearGradient>
-        <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#ff6b3d" />
-          <stop offset="50%" stop-color="#e8572a" />
-          <stop offset="100%" stop-color="#b83814" />
-        </linearGradient>
-        <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#ff9d76" />
-          <stop offset="100%" stop-color="#ff5722" />
-        </linearGradient>
-        <linearGradient id="accentGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#2a2a2a" />
-          <stop offset="100%" stop-color="#444444" />
-        </linearGradient>
-        
-        <!-- Glow filter -->
-        <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="2" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-
-      <!-- Ground reflection glow -->
-      <ellipse cx="50" cy="88" rx="35" ry="6" fill="#e8572a" opacity="0.25" filter="url(#neonGlow)" />
-
-      <!-- Sneaker Silhouette Base Structure -->
-      <!-- Heel Pull Tab -->
-      <path d="M78 30 C82 30 84 34 83 40 L81 48 C80 50 78 50 77 48 Z" fill="url(#bodyGrad)" />
-      <path d="M79 33 C81 33 82 35 81 39 L80 43 C79 44 78 44 77 43 Z" fill="#111" />
-
-      <!-- Shoe Upper Collar / Ankle -->
-      <path d="M50 25 C58 24 72 26 78 38 C80 42 81 50 81 56 L46 58 Z" fill="#181818" stroke="#2a2a2a" stroke-width="1" />
-
-      <!-- Main Body Panel -->
-      <path d="M18 76 C15 76 12 70 15 62 C18 54 28 40 46 32 C58 26 70 28 76 38 C80 45 80 55 79 66 C65 72 45 74 18 76 Z" fill="url(#bodyGrad)" />
-
-      <!-- Textured Mid-foot Overlay -->
-      <path d="M35 72 C30 65 34 50 48 42 C60 35 68 45 72 58 C60 62 48 68 35 72 Z" fill="url(#accentGrad)" opacity="0.9" />
-
-      <!-- Toe Cap Guard -->
-      <path d="M18 76 C15 76 12 71 14 65 C16 60 21 57 26 57 C24 64 22 71 18 76 Z" fill="#121212" />
-
-      <!-- Futuristic Cyber Glow Lines (Laces Replacement) -->
-      <path d="M32 50 L48 38" stroke="url(#glowGrad)" stroke-width="3" stroke-linecap="round" filter="url(#neonGlow)" />
-      <path d="M36 55 L52 43" stroke="url(#glowGrad)" stroke-width="3" stroke-linecap="round" filter="url(#neonGlow)" />
-      <path d="M40 60 L56 48" stroke="url(#glowGrad)" stroke-width="3" stroke-linecap="round" filter="url(#neonGlow)" />
-
-      <!-- Midsole (Modern thick chunk sole) -->
-      <path d="M12 74 C12 74 25 76 40 76 C55 76 72 74 85 68 C87 72 85 78 82 82 C68 85 32 85 15 82 C13 79 12 76 12 74 Z" fill="url(#soleGrad)" />
-      
-      <!-- Outsole tread / details -->
-      <path d="M15 82 L18 84 M25 83 L28 85 M35 83 L38 85 M45 83 L48 85 M55 83 L58 85 M65 82 L68 84 M75 81 L78 83" stroke="#222" stroke-width="2.5" stroke-linecap="round" />
-
-      <!-- Air Bubble/Pod in Sole (Glowing) -->
-      <path d="M58 78 C58 75 62 73 70 73 C78 73 80 75 80 78 C80 80 78 81 70 81 C62 81 58 80 58 78 Z" fill="#e8572a" filter="url(#neonGlow)" opacity="0.85" />
-      <ellipse cx="69" cy="77" rx="6" ry="2" fill="#fff" opacity="0.5" />
-
-      <!-- Futuristic Status LED on Shoe -->
-      <circle cx="73" cy="50" r="2.5" fill="#4ade80" filter="url(#neonGlow)" />
-      <circle cx="73" cy="50" r="1.2" fill="#fff" />
-    </svg>
+    <img src="fctrylab-logo.png" alt="FCTRY LAb AI Agent" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 12px rgba(232,87,42,0.6));" />
   </div>
 </div>
 
 <!-- CHAT WINDOW -->
 <div id="chat-window">
   <div class="chat-header">
-    <svg class="chat-avatar" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="19" cy="19" r="19" fill="#e8572a"/>
-      <path d="M6 30 C6 30 5 22 8 17 C11 12 16 11 19 11 L26 11 C30 11 33 14 34 19 L35 30 Z" fill="#fff" opacity="0.9"/>
-      <circle cx="13" cy="23" r="3" fill="#e8572a"/>
-      <circle cx="13" cy="23" r="1.5" fill="#1a1a1a"/>
-      <circle cx="21" cy="22" r="3" fill="#e8572a"/>
-      <circle cx="21" cy="22" r="1.5" fill="#1a1a1a"/>
-      <path d="M14 27 Q17 29 20 27" stroke="#e8572a" stroke-width="1" fill="none" stroke-linecap="round"/>
-    </svg>
+    <img class="chat-avatar" src="fctrylab-logo.png" alt="FCTRY LAb AI Agent" style="object-fit: contain; background: transparent; border-radius: 50%; filter: drop-shadow(0 0 6px rgba(232,87,42,0.4));" />
     <div class="chat-header-info">
       <strong>FCTRY LAb AI Agent</strong>
       <span><span class="online-dot"></span>Online</span>
