@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FCTRY LAb — Shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Barlow+Condensed:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --black: #0a0a0a;
+    --off-black: #111111;
+    --card: #161616;
+    --orange: #e8572a;
+    --orange-light: #ff6b3d;
+    --cream: #f0ebe3;
+    --gray: #888;
+    --border: #222;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'DM Mono', monospace;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--cream);
+  }
+
+  .logo span { color: var(--orange); }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+  }
+
+  nav ul li a {
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  nav ul li a:hover, nav ul li a.active { color: var(--orange); }
+
+  .nav-cta {
+    background: var(--orange);
+    color: #fff !important;
+    padding: 8px 20px;
+    font-size: 11px !important;
+    letter-spacing: 2px;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--orange-light) !important; color: #fff !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 40px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(120px, 20vw, 280px);
+    color: rgba(255,255,255,0.025);
+    letter-spacing: -4px;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     SHOE CHAT WIDGET
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+  #chat-launcher {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 9999;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* Pulsing background rings */
+  .launcher-glow-ring {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,87,42,0.3) 0%, rgba(232,87,42,0) 70%);
+    z-index: -1;
+    animation: launcher-pulse 2.5s infinite ease-in-out;
+    pointer-events: none;
+    bottom: -3px;
+  }
+
+  .launcher-glow-ring-2 {
+    position: absolute;
+    width: 105px;
+    height: 105px;
+    border-radius: 50%;
+    border: 1.5px dashed rgba(232,87,42,0.25);
+    z-index: -2;
+    animation: launcher-rotate 16s linear infinite;
+    pointer-events: none;
+    bottom: -11px;
+  }
+
+  @keyframes launcher-pulse {
+    0% { transform: scale(0.85); opacity: 0.9; }
+    50% { transform: scale(1.25); opacity: 0.15; }
+    100% { transform: scale(0.85); opacity: 0.9; }
+  }
+
+  @keyframes launcher-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Speech bubble */
+  .chat-bubble {
+    background: rgba(18, 18, 18, 0.9);
+    color: var(--cream);
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(232,87,42,0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.1);
+    opacity: 0;
+    transform: scale(0.85) translateY(12px);
+    transform-origin: bottom center;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .chat-bubble span.glow-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #4ade80;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #4ade80;
+    display: inline-block;
+  }
+
+  .chat-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    background: rgba(18, 18, 18, 0.9);
+    border-right: 1px solid rgba(232,87,42,0.4);
+    border-bottom: 1px solid rgba(232,87,42,0.4);
+  }
+
+  /* Shoe SVG wrapper */
+  .shoe-wrap {
+    width: 84px;
+    height: 84px;
+    transform: scale(1);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.6)) drop-shadow(0 0 10px rgba(232,87,42,0.2));
+    animation: shoe-float 3s ease-in-out infinite;
+  }
+
+  @keyframes shoe-float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-6px) rotate(-4deg); }
+  }
+
+  #chat-launcher:hover .shoe-wrap {
+    transform: scale(1.15) rotate(-8deg);
+    filter: drop-shadow(0 16px 32px rgba(0,0,0,0.7)) drop-shadow(0 0 20px rgba(232,87,42,0.6));
+    animation-play-state: paused;
+  }
+
+  #chat-launcher:hover .chat-bubble {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  #chat-launcher:active .shoe-wrap {
+    transform: scale(0.92) rotate(-4deg);
+    transition: transform 0.1s;
+  }
+
+  /* ── CHAT WINDOW ── */
+  #chat-window {
+    position: fixed;
+    bottom: 116px;
+    right: 28px;
+    width: 360px;
+    height: 520px;
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 20px;
+    z-index: 9998;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+    transform-origin: bottom right;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    pointer-events: none;
+  }
+
+  #chat-window.open {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: all;
+  }
+
+  .chat-header {
+    padding: 18px 20px;
+    background: #161616;
+    border-bottom: 1px solid #222;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .chat-avatar {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+  }
+
+  .chat-header-info strong {
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #f0ebe3;
+  }
+
+  .chat-header-info span {
+    font-size: 10px;
+    color: var(--orange);
+    letter-spacing: 1px;
+  }
+
+  .online-dot {
+    width: 7px;
+    height: 7px;
+    background: #4ade80;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    animation: pulse-dot 2s infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .close-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+    padding: 4px;
+  }
+
+  .close-btn:hover { color: var(--cream); }
+
+  /* Messages */
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scroll-behavior: smooth;
+  }
+
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+
+  .msg {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+    animation: msgIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  @keyframes msgIn {
+    from { opacity: 0; transform: scale(0.85) translateY(8px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .msg.bot {
+    background: #1e1e1e;
+    color: var(--cream);
+    border-radius: 4px 16px 16px 16px;
+    align-self: flex-start;
+  }
+
+  .msg.user {
+    background: var(--orange);
+    color: #fff;
+    border-radius: 16px 4px 16px 16px;
+    align-self: flex-end;
+  }
+
+  /* Typing indicator */
+  .typing-indicator {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 12px 16px;
+    background: #1e1e1e;
+    border-radius: 4px 16px 16px 16px;
+    width: fit-content;
+    align-self: flex-start;
+  }
+
+  .typing-indicator span {
+    width: 6px;
+    height: 6px;
+    background: #555;
+    border-radius: 50%;
+    animation: typing 1.2s infinite;
+  }
+
+  .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); background: #555; }
+    30% { transform: translateY(-5px); background: var(--orange); }
+  }
+
+  /* Input area */
+  .chat-input-area {
+    padding: 16px;
+    background: #161616;
+    border-top: 1px solid #222;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  #chat-input {
+    flex: 1;
+    background: #222;
+    border: 1px solid #2e2e2e;
+    border-radius: 24px;
+    padding: 10px 16px;
+    color: var(--cream);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  #chat-input:focus { border-color: var(--orange); }
+  #chat-input::placeholder { color: #444; }
+
+  #send-btn {
+    width: 38px;
+    height: 38px;
+    background: var(--orange);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.15s;
+    flex-shrink: 0;
+  }
+
+  #send-btn:hover { background: var(--orange-light); transform: scale(1.05); }
+  #send-btn:active { transform: scale(0.95); }
+
+  #send-btn svg { width: 16px; height: 16px; fill: #fff; }
+
+  .chat-powered {
+    text-align: center;
+    padding: 8px;
+    font-size: 9px;
+    color: #333;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 600px) {
+    nav ul { display: none; }
+    .hero-stats { display: none; }
+    .about-strip { grid-template-columns: 1fr; gap: 40px; }
+    #chat-launcher {
+      bottom: 16px;
+      right: 16px;
+    }
+    .shoe-wrap {
+      width: 68px;
+      height: 68px;
+    }
+    .launcher-glow-ring {
+      width: 72px;
+      height: 72px;
+      bottom: -2px;
+    }
+    .launcher-glow-ring-2 {
+      width: 84px;
+      height: 84px;
+      bottom: -8px;
+    }
+    .chat-bubble {
+      display: none;
+    }
+    #chat-window {
+      width: calc(100vw - 32px);
+      right: 16px;
+      bottom: 96px;
+      height: 480px;
+    }
+    .hero { padding: 100px 24px 60px; }
+    .section { padding: 60px 24px; }
+  }
+
+  /* ── DEMO HERO ── */
+  .demo-hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .demo-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+  }
+
+  .demo-tag {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    margin-bottom: 24px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .demo-hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+  }
+
+  .demo-hero h1 em {
+    color: var(--orange);
+    font-style: normal;
+    text-shadow: 0 0 20px rgba(232,87,42,0.3);
+  }
+
+  .demo-hero p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--gray);
+    max-width: 540px;
+    margin: 0 auto;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">FCTRY <span>LAb AI</span></div>
+  <ul>
+    <li><a href="fctrylab-demo.html">Testing Hub</a></li>
+    <li><a href="shop.html" class="active">Shop</a></li>
+    <li><a href="drops.html">Drops</a></li>
+    <li><a href="studio.html">Studio</a></li>
+  </ul>
+</nav>
+
+<!-- DEMO HERO -->
+<section class="demo-hero">
+  <div class="hero-bg-text">SHOP</div>
+  <div class="demo-content">
+    <div class="demo-tag">★ Client Demo Environment</div>
+    <h1>FCTRY LAb<br/><em>SHOP</em></h1>
+    <p>This is a simulated Shop page demonstrating the persistent presence of the interactive AI support agent widget.</p>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     SHOE CHAT WIDGET
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+
+<div id="chat-launcher" onclick="toggleChat()" title="Chat with FCTRY LAb AI">
+  <div class="launcher-glow-ring"></div>
+  <div class="launcher-glow-ring-2"></div>
+  <div class="chat-bubble"><span class="glow-dot"></span>How can I help you? 👟</div>
+  <div class="shoe-wrap">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Gradients -->
+        <linearGradient id="soleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#1e1e1e" />
+          <stop offset="100%" stop-color="#0a0a0a" />
+        </linearGradient>
+        <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ff6b3d" />
+          <stop offset="50%" stop-color="#e8572a" />
+          <stop offset="100%" stop-color="#b83814" />
+        </linearGradient>
+        <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#ff9d76" />
+          <stop offset="100%" stop-color="#ff5722" />
+        </linearGradient>
+        <linearGradient id="accentGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#2a2a2a" />
+          <stop offset="100%" stop-color="#444444" />
+        </linearGradient>
+        
+        <!-- Glow filter -->
+        <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="2" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      <!-- Ground reflection glow -->
+      <ellipse cx="50" cy="88" rx="35" ry="6" fill="#e8572a" opacity="0.25" filter="url(#neonGlow)" />
+
+      <!-- Sneaker Silhouette Base Structure -->
+      <!-- Heel Pull Tab -->
+      <path d="M78 30 C82 30 84 34 83 40 L81 48 C80 50 78 50 77 48 Z" fill="url(#bodyGrad)" />
+      <path d="M79 33 C81 33 82 35 81 39 L80 43 C79 44 78 44 77 43 Z" fill="#111" />
+
+      <!-- Shoe Upper Collar / Ankle -->
+      <path d="M50 25 C58 24 72 26 78 38 C80 42 81 50 81 56 L46 58 Z" fill="#181818" stroke="#2a2a2a" stroke-width="1" />
+
+      <!-- Main Body Panel -->
+      <path d="M18 76 C15 76 12 70 15 62 C18 54 28 40 46 32 C58 26 70 28 76 38 C80 45 80 55 79 66 C65 72 45 74 18 76 Z" fill="url(#bodyGrad)" />
+
+      <!-- Textured Mid-foot Overlay -->
+      <path d="M35 72 C30 65 34 50 48 42 C60 35 68 45 72 58 C60 62 48 68 35 72 Z" fill="url(#accentGrad)" opacity="0.9" />
+
+      <!-- Toe Cap Guard -->
+      <path d="M18 76 C15 76 12 71 14 65 C16 60 21 57 26 57 C24 64 22 71 18 76 Z" fill="#121212" />
+
+      <!-- Futuristic Cyber Glow Lines (Laces Replacement) -->
+      <path d="M32 50 L48 38" stroke="url(#glowGrad)" stroke-width="3" stroke-linecap="round" filter="url(#neonGlow)" />
+      <path d="M36 55 L52 43" stroke="url(#glowGrad)" stroke-width="3" stroke-linecap="round" filter="url(#neonGlow)" />
+      <path d="M40 60 L56 48" stroke="url(#glowGrad)" stroke-width="3" stroke-linecap="round" filter="url(#neonGlow)" />
+
+      <!-- Midsole (Modern thick chunk sole) -->
+      <path d="M12 74 C12 74 25 76 40 76 C55 76 72 74 85 68 C87 72 85 78 82 82 C68 85 32 85 15 82 C13 79 12 76 12 74 Z" fill="url(#soleGrad)" />
+      
+      <!-- Outsole tread / details -->
+      <path d="M15 82 L18 84 M25 83 L28 85 M35 83 L38 85 M45 83 L48 85 M55 83 L58 85 M65 82 L68 84 M75 81 L78 83" stroke="#222" stroke-width="2.5" stroke-linecap="round" />
+
+      <!-- Air Bubble/Pod in Sole (Glowing) -->
+      <path d="M58 78 C58 75 62 73 70 73 C78 73 80 75 80 78 C80 80 78 81 70 81 C62 81 58 80 58 78 Z" fill="#e8572a" filter="url(#neonGlow)" opacity="0.85" />
+      <ellipse cx="69" cy="77" rx="6" ry="2" fill="#fff" opacity="0.5" />
+
+      <!-- Futuristic Status LED on Shoe -->
+      <circle cx="73" cy="50" r="2.5" fill="#4ade80" filter="url(#neonGlow)" />
+      <circle cx="73" cy="50" r="1.2" fill="#fff" />
+    </svg>
+  </div>
+</div>
+
+<!-- CHAT WINDOW -->
+<div id="chat-window">
+  <div class="chat-header">
+    <svg class="chat-avatar" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="19" cy="19" r="19" fill="#e8572a"/>
+      <path d="M6 30 C6 30 5 22 8 17 C11 12 16 11 19 11 L26 11 C30 11 33 14 34 19 L35 30 Z" fill="#fff" opacity="0.9"/>
+      <circle cx="13" cy="23" r="3" fill="#e8572a"/>
+      <circle cx="13" cy="23" r="1.5" fill="#1a1a1a"/>
+      <circle cx="21" cy="22" r="3" fill="#e8572a"/>
+      <circle cx="21" cy="22" r="1.5" fill="#1a1a1a"/>
+      <path d="M14 27 Q17 29 20 27" stroke="#e8572a" stroke-width="1" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="chat-header-info">
+      <strong>FCTRY LAb AI Agent</strong>
+      <span><span class="online-dot"></span>Online</span>
+    </div>
+    <button class="close-btn" onclick="toggleChat()">✕</button>
+  </div>
+
+  <div class="chat-messages" id="messages">
+    <div class="msg bot">Hey! 👟 Welcome to the Lab! What can I help you with today?</div>
+  </div>
+
+  <div class="chat-input-area">
+    <input type="text" id="chat-input" placeholder="Ask about drops, sizing, returns..." onkeydown="if(event.key==='Enter') sendMessage()"/>
+    <button id="send-btn" onclick="sendMessage()">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+      </svg>
+    </button>
+  </div>
+  <div class="chat-powered">FCTRY LABS AI AGENT TESTING</div>
+</div>
+
+<script>
+  const WEBHOOK = 'https://valtoooy.app.n8n.cloud/webhook/d7078a9a-e017-4ba8-b2cb-ff27d3ec6f01/chat';
+  let isOpen = false;
+  let sessionId = 'session_' + Math.random().toString(36).substr(2,9);
+
+  function toggleChat() {
+    isOpen = !isOpen;
+    const win = document.getElementById('chat-window');
+    win.classList.toggle('open', isOpen);
+    if (isOpen) {
+      setTimeout(() => document.getElementById('chat-input').focus(), 300);
+    }
+  }
+
+  function addMessage(text, role) {
+    const msgs = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'msg ' + role;
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div;
+  }
+
+  function showTyping() {
+    const msgs = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'typing-indicator';
+    div.id = 'typing';
+    div.innerHTML = '<span></span><span></span><span></span>';
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('typing');
+    if (t) t.remove();
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    addMessage(text, 'user');
+    showTyping();
+
+    try {
+      const res = await fetch(WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'sendMessage',
+          chatInput: text,
+          sessionId: sessionId
+        })
+      });
+
+      removeTyping();
+
+      let reply = "I'm on it! Let me check that for you 👟";
+      try {
+        const data = await res.json();
+        reply = data.output || data.text || data.message || data.response ||
+          (Array.isArray(data) && data[0]?.output) ||
+          (data.choices && data.choices[0]?.message?.content) || reply;
+      } catch(e) {
+        const raw = await res.text().catch(() => '');
+        if (raw && raw.length < 2000) reply = raw;
+      }
+      addMessage(reply, 'bot');
+
+    } catch (err) {
+      removeTyping();
+      addMessage("Couldn't connect right now. Try again or email info@fctry.la 👟", 'bot');
+      console.error('Chat error:', err);
+    }
+  }
+</script>
+</body>
+</html>
