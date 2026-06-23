@@ -213,25 +213,29 @@
     border-bottom: 1px solid rgba(232,87,42,0.4);
   }
 
-  /* Shoe SVG wrapper */
-  .shoe-wrap {
-    width: 84px;
-    height: 84px;
-    transform: scale(1);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.6)) drop-shadow(0 0 10px rgba(232,87,42,0.2));
-    animation: shoe-float 3s ease-in-out infinite;
+  /* Chat Launcher Icon wrapper */
+  .chat-launcher-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--orange) 0%, #ff7347 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(232,87,42,0.4), inset 0 2px 4px rgba(255,255,255,0.2);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+    animation: launcher-float 3s ease-in-out infinite;
+    z-index: 2;
   }
 
-  @keyframes shoe-float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-6px) rotate(-4deg); }
+  @keyframes launcher-float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
   }
 
-  #chat-launcher:hover .shoe-wrap {
-    transform: scale(1.15) rotate(-8deg);
-    filter: drop-shadow(0 16px 32px rgba(0,0,0,0.7)) drop-shadow(0 0 20px rgba(232,87,42,0.6));
-    animation-play-state: paused;
+  #chat-launcher:hover .chat-launcher-icon {
+    transform: scale(1.1);
+    box-shadow: 0 12px 30px rgba(232,87,42,0.6), 0 0 20px rgba(232,87,42,0.4);
   }
 
   #chat-launcher:hover .chat-bubble {
@@ -239,9 +243,8 @@
     transform: scale(1) translateY(0);
   }
 
-  #chat-launcher:active .shoe-wrap {
-    transform: scale(0.92) rotate(-4deg);
-    transition: transform 0.1s;
+  #chat-launcher:active .chat-launcher-icon {
+    transform: scale(0.95);
   }
 
   /* ── CHAT WINDOW ── */
@@ -467,9 +470,9 @@
       bottom: 16px;
       right: 16px;
     }
-    .shoe-wrap {
-      width: 68px;
-      height: 68px;
+    .chat-launcher-icon {
+      width: 56px;
+      height: 56px;
     }
     .launcher-glow-ring {
       width: 72px;
@@ -580,8 +583,16 @@
   <div class="launcher-glow-ring"></div>
   <div class="launcher-glow-ring-2"></div>
   <div class="chat-bubble"><span class="glow-dot"></span>How can I help you? 👟</div>
-  <div class="shoe-wrap">
-    <img src="fctrylab-logo.png" alt="FCTRY LAb AI Agent" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 12px rgba(232,87,42,0.6));" />
+  <div class="chat-launcher-icon">
+    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="11" width="18" height="10" rx="2" />
+      <circle cx="8" cy="16" r="1.5" fill="#fff" />
+      <circle cx="16" cy="16" r="1.5" fill="#fff" />
+      <path d="M9 20a3 3 0 0 0 6 0" />
+      <path d="M12 6V3" />
+      <circle cx="12" cy="3" r="1" fill="#fff" />
+      <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+    </svg>
   </div>
 </div>
 
