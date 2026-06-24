@@ -481,7 +481,7 @@
     width: 90px;
     height: 90px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(232,87,42,0.3) 0%, rgba(232,87,42,0) 70%);
+    background: radial-gradient(circle, rgba(34,197,94,0.3) 0%, rgba(34,197,94,0) 70%);
     z-index: -1;
     animation: launcher-pulse 2.5s infinite ease-in-out;
     pointer-events: none;
@@ -493,7 +493,7 @@
     width: 105px;
     height: 105px;
     border-radius: 50%;
-    border: 1.5px dashed rgba(232,87,42,0.25);
+    border: 1.5px dashed rgba(34,197,94,0.25);
     z-index: -2;
     animation: launcher-rotate 16s linear infinite;
     pointer-events: none;
@@ -517,7 +517,7 @@
     color: #111111;
     padding: 10px 16px;
     border-radius: 12px;
-    border: 1px solid rgba(232,87,42,0.4);
+    border: 1px solid rgba(34,197,94,0.4);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     font-family: 'DM Mono', monospace;
@@ -555,20 +555,20 @@
     width: 10px;
     height: 10px;
     background: rgba(255, 255, 255, 0.95);
-    border-right: 1px solid rgba(232,87,42,0.4);
-    border-bottom: 1px solid rgba(232,87,42,0.4);
+    border-right: 1px solid rgba(34,197,94,0.4);
+    border-bottom: 1px solid rgba(34,197,94,0.4);
   }
 
   /* Chat Launcher Icon wrapper */
   .chat-launcher-icon {
     width: 70px;
     height: 70px;
-    background: linear-gradient(135deg, var(--orange) 0%, #ff7347 100%);
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 24px rgba(232,87,42,0.4), inset 0 2px 4px rgba(255,255,255,0.2);
+    box-shadow: 0 8px 24px rgba(34,197,94,0.4), inset 0 2px 4px rgba(255,255,255,0.2);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
     animation: launcher-float 3s ease-in-out infinite;
     z-index: 2;
@@ -581,7 +581,7 @@
 
   #chat-launcher:hover .chat-launcher-icon {
     transform: scale(1.1);
-    box-shadow: 0 12px 30px rgba(232,87,42,0.6), 0 0 20px rgba(232,87,42,0.4);
+    box-shadow: 0 12px 30px rgba(34,197,94,0.6), 0 0 20px rgba(34,197,94,0.4);
   }
 
   #chat-launcher:hover .chat-bubble {
@@ -884,7 +884,7 @@
   .demo-hero h1 em {
     color: var(--orange);
     font-style: normal;
-    text-shadow: 0 0 20px rgba(232,87,42,0.3);
+    text-shadow: 0 0 20px rgba(34,197,94,0.3);
   }
 
   .demo-hero p {
@@ -929,14 +929,8 @@
   <div class="launcher-glow-ring-2"></div>
   <div class="chat-bubble"><span class="glow-dot"></span>How can I help you? 👟</div>
   <div class="chat-launcher-icon">
-    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="11" width="18" height="10" rx="2" />
-      <circle cx="8" cy="16" r="1.5" fill="#fff" />
-      <circle cx="16" cy="16" r="1.5" fill="#fff" />
-      <path d="M9 20a3 3 0 0 0 6 0" />
-      <path d="M12 6V3" />
-      <circle cx="12" cy="3" r="1" fill="#fff" />
-      <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+    <svg viewBox="0 0 24 24" width="30" height="30" fill="#fff">
+      <path d="M12 2C6.48 2 2 5.58 2 10c0 2.53 1.48 4.77 3.73 6.13L4 22l5.44-2.72C10.28 19.74 11.12 19.8 12 19.8c5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
     </svg>
   </div>
 </div>
@@ -944,7 +938,7 @@
 <!-- CHAT WINDOW -->
 <div id="chat-window">
   <div class="chat-header">
-    <img class="chat-avatar" src="fctrylab-logo.png" alt="FCTRY LAb AI Agent" style="object-fit: contain; background: transparent; border-radius: 50%; filter: drop-shadow(0 0 6px rgba(232,87,42,0.4));" />
+    <img class="chat-avatar" src="fctrylab-logo.png" alt="FCTRY LAb AI Agent" style="object-fit: contain; background: transparent; border-radius: 50%; filter: drop-shadow(0 0 6px rgba(34,197,94,0.4));" />
     <div class="chat-header-info">
       <strong>FCTRY LAb AI Agent</strong>
       <span><span class="online-dot"></span>Online</span>
@@ -1049,3 +1043,4 @@
 </script>
 </body>
 </html>
+
